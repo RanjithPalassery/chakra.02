@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Chakra Darshini — Jyotish Codex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+Malayalam:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14120E;
+  --ink-2:#3A342A;
+  --muted:#8B8172;
+  --paper:#F5F3EE;
+  --panel:#FFFFFF;
+  --rule:#DED7C7;
+  --brass:#C89B3C;
+  --brass-dp:#9A7519;
+  --brass-lt:#E8C87A;
+  --face-1:#1B1813;
+  --face-2:#26221A;
+  --retro:#A63D2F;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+  --disp:'Fraunces',Georgia,serif;
+  --mal:'Noto Sans Malayalam','Nirmala UI','Manjari',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--paper);color:var(--ink);font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;overscroll-behavior:none;
+}
+.mal{font-family:var(--mal)}
+
+/* ---------- masthead ---------- */
+header{
+  display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  padding:14px 20px 12px;border-bottom:1px solid var(--rule);
+}
+.brand{font-family:var(--disp);font-size:19px;font-weight:600;letter-spacing:.01em}
+.brand em{font-style:normal;color:var(--brass-dp)}
+.sub{font-family:var(--mal);font-size:15px;color:var(--muted)}
+.spacer{flex:1}
+.toggle{display:flex;border:1px solid var(--rule);border-radius:2px;overflow:hidden}
+.toggle button{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;
+  padding:5px 10px;background:var(--panel);border:0;color:var(--muted);cursor:pointer;
+}
+.toggle button[aria-pressed=true]{background:var(--ink);color:var(--brass-lt)}
+
+/* ---------- layout ---------- */
+main{
+  display:grid;grid-template-columns:minmax(320px,440px) 1fr;
+  gap:0;align-items:start;
+}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+
+/* ---------- dial ---------- */
+.instrument{
+  background:radial-gradient(120% 100% at 50% 0%,var(--face-2),var(--face-1) 70%);
+  padding:18px 18px 14px;position:relative;
+  border-right:1px solid var(--rule);
+}
+@media(max-width:900px){.instrument{border-right:0;border-bottom:1px solid var(--rule)}}
+#dial{display:block;width:100%;height:auto;touch-action:none;cursor:grab}
+#dial.dragging{cursor:grabbing}
+.gearbar{display:flex;gap:5px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.gear{
+  font-family:var(--mono);font-size:10px;letter-spacing:.07em;
+  padding:6px 9px;border:1px solid #3B352A;background:transparent;
+  color:#9C9384;border-radius:2px;cursor:pointer;
+}
+.gear[aria-pressed=true]{border-color:var(--brass);color:var(--brass-lt);background:#2E2819}
+.transport{display:flex;gap:5px;margin-left:auto}
+.tbtn{
+  font-family:var(--mono);font-size:12px;width:32px;height:28px;
+  border:1px solid #3B352A;background:transparent;color:#9C9384;
+  border-radius:2px;cursor:pointer;
+}
+.tbtn:hover{color:var(--brass-lt);border-color:var(--brass)}
+.hint{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;
+  color:#6E6656;margin-top:9px;text-transform:uppercase;
+}
+
+/* ---------- right rail ---------- */
+.rail{padding:0}
+.block{padding:16px 20px;border-bottom:1px solid var(--rule)}
+.legend{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:10px;
+}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:9px}
+label{display:block}
+label span{
+  display:block;font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:3px;
+}
+input,select{
+  width:100%;font-family:var(--mono);font-size:13px;color:var(--ink);
+  padding:6px 7px;border:1px solid var(--rule);border-radius:2px;background:var(--panel);
+}
+input:focus,select:focus{outline:2px solid var(--brass);outline-offset:-1px}
+
+/* readout */
+.readout{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.cellr{background:var(--panel);padding:9px 11px}
+.cellr .k{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.cellr .k.mal{font-family:var(--mal);font-size:11px;letter-spacing:0;text-transform:none}
+.cellr .v{font-family:var(--disp);font-size:17px;margin-top:2px;line-height:1.2}
+.cellr .v.mal{font-family:var(--mal);font-size:16px}
+.cellr .n{font-family:var(--mono);font-size:11px;color:var(--ink-2);margin-top:1px}
+.cellr.hero{grid-column:1/-1;background:#FFFDF6;border-left:3px solid var(--brass)}
+
+/* charts */
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.charts{grid-template-columns:1fr}}
+.chartwrap{min-width:0}
+.chartwrap h3{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:7px;
+}
+.chartwrap svg{width:100%;height:auto;display:block;background:var(--panel);border:1px solid var(--rule)}
+
+table.pl{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11.5px}
+table.pl th{
+  text-align:left;font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);font-weight:500;padding:0 6px 5px 0;border-bottom:1px solid var(--rule);
+}
+table.pl td{padding:4px 6px 4px 0;border-bottom:1px solid #EFEBE0}
+table.pl td.nak{font-family:var(--mal);font-size:12.5px}
+.rx{color:var(--retro);font-weight:600}
+footer{padding:12px 20px 26px;font-family:var(--mono);font-size:9.5px;color:var(--muted);line-height:1.7}
+footer b{color:var(--ink-2)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">Jyotish <em>Codex</em></div>
+  <div class="sub">ചക്രദർശിനി</div>
+  <div class="spacer"></div>
+  <div class="toggle" id="srctog" style="margin-right:8px">
+    <button data-src="fast" aria-pressed="true">FAST</button>
+    <button data-src="exact" aria-pressed="false">EXACT</button>
+  </div>
+  <div class="toggle" id="langtog">
+    <button data-lang="ml" aria-pressed="true">മലയാളം</button>
+    <button data-lang="en" aria-pressed="false">ENGLISH</button>
+  </div>
+</header>
+<div id="srcnote" hidden style="font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;
+  padding:7px 20px;background:#FCF6E4;border-bottom:1px solid var(--rule);color:#7A6420"></div>
+
+<main>
+  <!-- ============ DIAL ============ -->
+  <section class="instrument">
+    <svg id="dial" viewBox="0 0 440 440" role="img" aria-label="Rotating zodiac dial"></svg>
+
+    <div class="gearbar" id="gearbar">
+      <button class="gear" data-unit="3600">1 HR / TURN</button>
+      <button class="gear" data-unit="86164" aria-pressed="true">1 DAY / TURN</button>
+      <button class="gear" data-unit="2551443">1 MTH / TURN</button>
+      <button class="gear" data-unit="31556952">1 YR / TURN</button>
+      <button class="gear" data-unit="378683424">12 YR / TURN</button>
+      <div class="transport">
+        <button class="tbtn" id="rew" title="Run backward">◀◀</button>
+        <button class="tbtn" id="play" title="Play / pause">▶</button>
+        <button class="tbtn" id="now" title="Jump to now">◉</button>
+      </div>
+    </div>
+    <div class="hint">Drag the bezel — clockwise advances time, anticlockwise rewinds</div>
+  </section>
+
+  <!-- ============ RAIL ============ -->
+  <div class="rail">
+
+    <div class="block">
+      <div class="legend">Moment &amp; place</div>
+      <div class="fields">
+        <label><span>Date</span><input type="date" id="fdate"></label>
+        <label><span>Time</span><input type="time" id="ftime" step="60"></label>
+        <label><span>UTC offset</span><input type="number" id="ftz" step="0.25" value="3"></label>
+        <label><span>Latitude °N</span><input type="number" id="flat" step="0.0001" value="27.0174"></label>
+        <label><span>Longitude °E</span><input type="number" id="flon" step="0.0001" value="49.6225"></label>
+        <label><span>Preset place</span>
+          <select id="fplace">
+            <option value="">— choose —</option>
+            <option value="27.0174,49.6225,3">Jubail, SA</option>
+            <option value="11.2588,75.7804,5.5">Kozhikode</option>
+            <option value="10.7867,76.6548,5.5">Palakkad</option>
+            <option value="8.5241,76.9366,5.5">Thiruvananthapuram</option>
+            <option value="9.9312,76.2673,5.5">Kochi</option>
+            <option value="11.8745,75.3704,5.5">Kannur</option>
+            <option value="10.5276,76.2144,5.5">Thrissur</option>
+            <option value="9.5916,76.5222,5.5">Kottayam</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="legend">Reading</div>
+      <div class="readout" id="readout"></div>
+    </div>
+
+    <div class="block">
+      <div class="legend">Chakras</div>
+      <div class="charts">
+        <div class="chartwrap"><h3>Rāśi · D1</h3><svg id="d1" viewBox="0 0 340 340"></svg></div>
+        <div class="chartwrap"><h3>Navāṁśa · D9</h3><svg id="d9" viewBox="0 0 340 340"></svg></div>
+      </div>
+    </div>
+
+    <div class="block" style="border-bottom:0">
+      <div class="legend">Positions</div>
+      <table class="pl"><thead><tr>
+        <th>Graha</th><th>Rāśi</th><th>Deg</th><th>Nakṣatra</th><th>Pd</th><th>D9</th>
+      </tr></thead><tbody id="ptable"></tbody></table>
+    </div>
+
+    <footer>
+      <b>Accuracy.</b> Positions here come from an in-page analytical ephemeris — typically within a
+      few arc-minutes. Fine for watching the chakra move; <b>not</b> for client reports.
+      Run <b>chakra_api.py</b> alongside this file to switch to your own Swiss Ephemeris values.<br>
+      Lahiri ayanāṁśa · Sidereal · Mean nodes.
+    </footer>
+  </div>
+</main>
+
+<script>
+"use strict";
+/* ══════════════════════════════════════════════════════════════
+   1. MATH + TIME
+   ══════════════════════════════════════════════════════════════ */
+const D2R=Math.PI/180, R2D=180/Math.PI;
+const norm=a=>((a%360)+360)%360;
+const sin=d=>Math.sin(d*D2R), cos=d=>Math.cos(d*D2R), tan=d=>Math.tan(d*D2R);
+
+function jdFromUTC(ms){ return ms/86400000 + 2440587.5; }
+
+/* ══════════════════════════════════════════════════════════════
+   2. EPHEMERIS  (Meeus / JPL approximate elements)
+   ══════════════════════════════════════════════════════════════ */
+function ayanamsha(T){ return 23.85300 + 1.3960420*T + 0.0003086*T*T; }
+
+function sunLong(T){
+  const L0 = 280.46646 + 36000.76983*T + 0.0003032*T*T;
+  const M  = 357.52911 + 35999.05029*T - 0.0001537*T*T;
+  const C  = (1.914602 - 0.004817*T - 0.000014*T*T)*sin(M)
+           + (0.019993 - 0.000101*T)*sin(2*M) + 0.000289*sin(3*M);
+  const om = 125.04 - 1934.136*T;
+  return norm(L0 + C - 0.00569 - 0.00478*sin(om));
+}
+
+function moonLong(T){
+  const Lp = 218.3164477 + 481267.88123421*T - 0.0015786*T*T + T*T*T/538841;
+  const D  = 297.8501921 + 445267.1114034*T - 0.0018819*T*T;
+  const M  = 357.5291092 + 35999.0502909*T - 0.0001536*T*T;
+  const Mp = 134.9633964 + 477198.8675055*T + 0.0087414*T*T;
+  const F  =  93.2720950 + 483202.0175233*T - 0.0036539*T*T;
+  const t=[
+    [6288774,0,0,1,0],[1274027,2,0,-1,0],[658314,2,0,0,0],[213618,0,0,2,0],
+    [-185116,0,1,0,0],[-114332,0,0,0,2],[58793,2,0,-2,0],[57066,2,-1,-1,0],
+    [53322,2,0,1,0],[45758,2,-1,0,0],[-40923,0,1,-1,0],[-34720,1,0,0,0],
+    [-30383,0,1,1,0],[15327,2,0,0,-2],[-12528,0,0,1,2],[10980,0,0,1,-2],
+    [10675,4,0,-1,0],[10034,0,0,3,0],[8548,4,0,-2,0],[-7888,2,1,-1,0],
+    [-6766,2,1,0,0],[-5163,1,0,-1,0],[4987,1,1,0,0],[4036,2,-1,1,0],
+    [3994,2,0,2,0],[3861,4,0,0,0],[3665,2,0,-3,0],[-2689,0,1,-2,0]
+  ];
+  let s=0;
+  for(const [c,d,m,mp,f] of t) s += c*Math.sin((d*D+m*M+mp*Mp+f*F)*D2R);
+  return norm(Lp + s/1e6);
+}
+
+function rahuLong(T){
+  return norm(125.0445479 - 1934.1362891*T + 0.0020754*T*T + T*T*T/467441);
+}
+
+/* JPL approximate elements: a, e, I, L, peri, node  +  per-century rates */
+const ELEM = {
+  Mercury:[[0.38709927,0.20563593,7.00497902,252.25032350,77.45779628,48.33076593],
+           [0.00000037,0.00001906,-0.00594749,149472.67411175,0.16047689,-0.12534081]],
+  Venus  :[[0.72333566,0.00677672,3.39467605,181.97909950,131.60246718,76.67984255],
+           [0.00000390,-0.00004107,-0.00078890,58517.81538729,0.00268329,-0.27769418]],
+  Earth  :[[1.00000261,0.01671123,-0.00001531,100.46457166,102.93768193,0.0],
+           [0.00000562,-0.00004392,-0.01294668,35999.37244981,0.32327364,0.0]],
+  Mars   :[[1.52371034,0.09339410,1.84969142,-4.55343205,-23.94362959,49.55953891],
+           [0.00001847,0.00007882,-0.00813131,19140.30268499,0.44441088,-0.29257343]],
+  Jupiter:[[5.20288700,0.04838624,1.30439695,34.39644051,14.72847983,100.47390909],
+           [-0.00011607,-0.00013253,-0.00183714,3034.74612775,0.21252668,0.20469106]],
+  Saturn :[[9.53667594,0.05386179,2.48599187,49.95424423,92.59887831,113.66242448],
+           [-0.00125060,-0.00050991,0.00193609,1222.49362201,-0.41897216,-0.28867794]]
+};
+
+function helio(name,T){
+  const [b,r]=ELEM[name];
+  const a=b[0]+r[0]*T, e=b[1]+r[1]*T, I=b[2]+r[2]*T,
+        L=b[3]+r[3]*T, pi=b[4]+r[4]*T, om=b[5]+r[5]*T;
+  let M=L-pi; M=((M%360)+540)%360-180;
+  const ed=e*R2D;
+  let E=M+ed*sin(M);
+  for(let i=0;i<8;i++){
+    const dM=M-(E-ed*sin(E)), dE=dM/(1-e*cos(E));
+    E+=dE; if(Math.abs(dE)<1e-9) break;
+  }
+  const xo=a*(cos(E)-e), yo=a*Math.sqrt(1-e*e)*sin(E);
+  const w=pi-om;
+  const cw=cos(w),sw=sin(w),co=cos(om),so=sin(om),ci=cos(I),si=sin(I);
+  return {
+    x:(cw*co-sw*so*ci)*xo + (-sw*co-cw*so*ci)*yo,
+    y:(cw*so+sw*co*ci)*xo + (-sw*so+cw*co*ci)*yo,
+    z:(sw*si)*xo + (cw*si)*yo
+  };
+}
+
+function planetLong(name,T){
+  const p=helio(name,T), e=helio('Earth',T);
+  const x=p.x-e.x, y=p.y-e.y;
+  /* J2000 ecliptic → equinox of date (general precession in longitude) */
+  return norm(Math.atan2(y,x)*R2D + 1.396971*T);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   3. ASCENDANT
+   ══════════════════════════════════════════════════════════════ */
+function ascTropical(jd, lat, lon){
+  const T=(jd-2451545)/36525;
+  let gmst = 280.46061837 + 360.98564736629*(jd-2451545)
+           + 0.000387933*T*T - T*T*T/38710000;
+  const ramc = norm(gmst + lon);
+  const eps  = 23.439291 - 0.0130042*T - 1.64e-7*T*T;
+  let asc = norm(Math.atan2(cos(ramc), -(sin(ramc)*cos(eps)+tan(lat)*sin(eps)))*R2D);
+  const mc = norm(Math.atan2(sin(ramc), cos(ramc)*cos(eps))*R2D);
+  if(norm(asc-mc) > 180) asc = norm(asc+180);   /* asc must lie 0–180° after MC */
+  return asc;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   4. CHART ASSEMBLY
+   ══════════════════════════════════════════════════════════════ */
+const BODIES=[
+  {id:'su',ml:'സൂ',en:'Su',nm:'Sūrya',nmml:'സൂര്യൻ'},
+  {id:'mo',ml:'ച', en:'Mo',nm:'Candra',nmml:'ചന്ദ്രൻ'},
+  {id:'ma',ml:'കു',en:'Ma',nm:'Kuja',nmml:'കുജൻ'},
+  {id:'me',ml:'ബു',en:'Me',nm:'Budha',nmml:'ബുധൻ'},
+  {id:'ju',ml:'ഗു',en:'Ju',nm:'Guru',nmml:'ഗുരു'},
+  {id:'ve',ml:'ശു',en:'Ve',nm:'Śukra',nmml:'ശുക്രൻ'},
+  {id:'sa',ml:'ശ', en:'Sa',nm:'Śani',nmml:'ശനി'},
+  {id:'ra',ml:'രാ',en:'Ra',nm:'Rāhu',nmml:'രാഹു'},
+  {id:'ke',ml:'കേ',en:'Ke',nm:'Ketu',nmml:'കേതു'}
+];
+
+const RASI_ML=['മേടം','ഇടവം','മിഥുനം','കർക്കടകം','ചിങ്ങം','കന്നി',
+               'തുലാം','വൃശ്ചികം','ധനു','മകരം','കുംഭം','മീനം'];
+const RASI_EN=['Meṣa','Vṛṣabha','Mithuna','Karka','Siṁha','Kanyā',
+               'Tulā','Vṛścika','Dhanu','Makara','Kumbha','Mīna'];
+
+/* Kerala Malayalam nakṣatra names — the only set used in reports */
+const NAK_ML=['അശ്വതി','ഭരണി','കാർത്തിക','രോഹിണി','മകയിരം','തിരുവാതിര',
+  'പുണർതം','പൂയം','ആയില്യം','മകം','പൂരം','ഉത്രം','അത്തം','ചിത്തിര','ചോതി',
+  'വിശാഖം','അനിഴം','തൃക്കേട്ട','മൂലം','പൂരാടം','ഉത്രാടം','തിരുവോണം','അവിട്ടം',
+  'ചതയം','പൂരുരുട്ടാതി','ഉത്രട്ടാതി','രേവതി'];
+const NAK_EN=['Aśvatī','Bharaṇi','Kārttika','Rohiṇi','Makayiram','Tiruvātira',
+  'Puṇartam','Pūyam','Āyilyam','Makam','Pūram','Utram','Attam','Cittira','Cōti',
+  'Viśākham','Aṇiḻam','Tṛkkēṭṭa','Mūlam','Pūrāṭam','Utrāṭam','Tiruvōṇam','Aviṭṭam',
+  'Catayam','Pūruruṭṭāti','Utraṭṭāti','Rēvati'];
+
+const nakOf = L => Math.floor(norm(L)/(360/27));
+const padOf = L => Math.floor((norm(L)%(360/27))/(360/108))+1;
+const navOf = L => Math.floor(norm(L)/(30/9))%12;   /* universal D9 mapping */
+
+function rawLongs(jd){
+  const T=(jd-2451545)/36525;
+  const ra=rahuLong(T);
+  return {
+    su:sunLong(T), mo:moonLong(T),
+    ma:planetLong('Mars',T), me:planetLong('Mercury',T),
+    ju:planetLong('Jupiter',T), ve:planetLong('Venus',T),
+    sa:planetLong('Saturn',T), ra:ra, ke:norm(ra+180)
+  };
+}
+
+function buildChart(ms, lat, lon, ex){
+  const jd=jdFromUTC(ms), T=(jd-2451545)/36525;
+  const ay = ex ? ex.ayanamsha : ayanamsha(T);
+  const trop=rawLongs(jd), prev=rawLongs(jd-0.5), next=rawLongs(jd+0.5);
+
+  const planets=BODIES.map(b=>{
+    let sid, retro;
+    if(ex){ sid=norm(ex.planets[b.id].lon); retro=ex.planets[b.id].retro; }
+    else {
+      sid=norm(trop[b.id]-ay);
+      if(b.id==='ra'||b.id==='ke') retro=true;
+      else if(b.id==='su'||b.id==='mo') retro=false;
+      else { let d=next[b.id]-prev[b.id];
+        if(d>180)d-=360; if(d<-180)d+=360; retro=d<0; }
+    }
+    return {...b, lon:sid, sign:Math.floor(sid/30), deg:sid%30,
+            nak:nakOf(sid), pada:padOf(sid), nav:navOf(sid), retro};
+  });
+
+  const asc = ex ? norm(ex.asc) : norm(ascTropical(jd,lat,lon)-ay);
+  const lagna={id:'la',ml:'ല',en:'La',nm:'Lagna',nmml:'ലഗ്നം',
+    lon:asc, sign:Math.floor(asc/30), deg:asc%30,
+    nak:nakOf(asc), pada:padOf(asc), nav:navOf(asc), retro:false};
+
+  /* tithi */
+  const el=norm(trop.mo-trop.su);
+  const tithi=Math.floor(el/12)+1;
+
+  return {planets, lagna, ay, tithi, paksha: el<180?'śukla':'kṛṣṇa'};
+}
+
+/* ══════════════════════════════════════════════════════════════
+   5. STATE
+   ══════════════════════════════════════════════════════════════ */
+const S={ ms:Date.now(), lat:27.0174, lon:49.6225, tz:3,
+          unit:86164, lang:'ml', exact:false, chart:null };
+
+const fmt=(x,n=0)=>x.toFixed(n).padStart(n?5:2,'0');
+function dms(d){
+  const D=Math.floor(d), m=(d-D)*60, M=Math.floor(m), s=Math.round((m-M)*60);
+  return `${D}°${String(M).padStart(2,'0')}′${String(s%60).padStart(2,'0')}″`;
+}
+const rname = i => S.lang==='ml'?RASI_ML[i]:RASI_EN[i];
+const nname = i => S.lang==='ml'?NAK_ML[i]:NAK_EN[i];
+const gname = b => S.lang==='ml'?b.nmml:b.nm;
+const glyph = b => S.lang==='ml'?b.ml:b.en;
+
+/* ══════════════════════════════════════════════════════════════
+   6. DIAL RENDER
+   ══════════════════════════════════════════════════════════════ */
+const SVGNS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const n=document.createElementNS(SVGNS,t);
+  for(const k in a) n.setAttribute(k,a[k]); return n;};
+const CX=220, CY=220;
+const pt=(r,th)=>[CX+r*Math.sin(th*D2R), CY-r*Math.cos(th*D2R)];
+
+/* screen angle (clockwise from 12 o'clock) for a sidereal longitude */
+const screenAngle = (L,asc) => norm(270-(L-asc));
+
+function drawDial(){
+  const svg=document.getElementById('dial');
+  svg.textContent='';
+  const c=S.chart, asc=c.lagna.lon;
+
+  /* knurled bezel — the grip */
+  const bez=el('g',{});
+  bez.appendChild(el('circle',{cx:CX,cy:CY,r:207,fill:'#0F0D0A',stroke:'#4A4132','stroke-width':1}));
+  for(let i=0;i<84;i++){
+    const th=i*(360/84);
+    const [x1,y1]=pt(198,th), [x2,y2]=pt(212,th);
+    bez.appendChild(el('line',{x1,y1,x2,y2,stroke:i%7===0?'#C89B3C':'#5C5240',
+      'stroke-width':i%7===0?1.6:1,'stroke-linecap':'round'}));
+  }
+  svg.appendChild(bez);
+
+  /* face */
+  svg.appendChild(el('circle',{cx:CX,cy:CY,r:195,fill:'#191610',stroke:'#3A3427','stroke-width':1}));
+  svg.appendChild(el('circle',{cx:CX,cy:CY,r:138,fill:'none',stroke:'#2E2A20','stroke-width':1}));
+  svg.appendChild(el('circle',{cx:CX,cy:CY,r:96, fill:'none',stroke:'#2E2A20','stroke-width':1}));
+
+  /* rotating zodiac ring */
+  for(let s=0;s<12;s++){
+    const a0=screenAngle(s*30,asc), a1=screenAngle(s*30+30,asc);
+    const [x0,y0]=pt(195,a0), [x1,y1]=pt(195,a1);
+    const [ix,iy]=pt(138,a1), [jx,jy]=pt(138,a0);
+    const sweep = norm(a1-a0)>180?0:1;
+    const d=`M${x0} ${y0} A195 195 0 0 ${sweep} ${x1} ${y1} L${ix} ${iy} A138 138 0 0 ${sweep?0:1} ${jx} ${jy} Z`;
+    svg.appendChild(el('path',{d,fill:s%2?'#1E1A13':'#221E15',stroke:'#332E22','stroke-width':.8}));
+
+    /* true centre of the sector (15° into the sign) */
+    const mid=screenAngle(s*30+15,asc);
+    const [tx,ty]=pt(166,mid);
+    /* keep text upright: flip labels on the lower half of the wheel */
+    const rot=(mid>90 && mid<270)? mid+180 : mid;
+    const t=el('text',{x:tx,y:ty,fill:s===c.lagna.sign?'#E8C87A':'#8C826C',
+      'font-size':S.lang==='ml'?12:11,'text-anchor':'middle','dominant-baseline':'central',
+      'font-family':S.lang==='ml'?'Noto Sans Malayalam, sans-serif':'IBM Plex Sans, sans-serif',
+      transform:`rotate(${rot} ${tx} ${ty})`});
+    t.textContent=rname(s);
+    svg.appendChild(t);
+  }
+
+  /* degree ticks each 5° */
+  for(let d=0;d<360;d+=5){
+    const th=screenAngle(d,asc);
+    const [x1,y1]=pt(138,th), [x2,y2]=pt(d%30===0?128:133,th);
+    svg.appendChild(el('line',{x1,y1,x2,y2,stroke:d%30===0?'#6B6045':'#3C3628','stroke-width':d%30?.7:1.2}));
+  }
+
+  /* nakṣatra ring — 27 divisions */
+  for(let n=0;n<27;n++){
+    const th=screenAngle(n*(360/27),asc);
+    const [x1,y1]=pt(96,th), [x2,y2]=pt(88,th);
+    svg.appendChild(el('line',{x1,y1,x2,y2,stroke:'#4A4230','stroke-width':.8}));
+  }
+
+  /* horizon axis + lagna pointer */
+  const [hx1,hy1]=pt(212,270), [hx2,hy2]=pt(212,90);
+  svg.appendChild(el('line',{x1:hx1,y1:hy1,x2:hx2,y2:hy2,stroke:'#4A4230','stroke-width':.9,'stroke-dasharray':'3 4'}));
+  svg.appendChild(el('path',{d:`M${CX-208} ${CY} l16 -7 v14 Z`,fill:'#C89B3C'}));
+  svg.appendChild(el('line',{x1:CX-192,y1:CY,x2:CX-30,y2:CY,stroke:'#C89B3C','stroke-width':1.4}));
+
+  /* grahas */
+  const placed=[];
+  for(const p of [...c.planets].sort((a,b)=>a.lon-b.lon)){
+    let th=screenAngle(p.lon,asc), r=118;
+    while(r>56 && placed.some(q=>Math.abs(norm(q.th-th+180)-180)<9 && Math.abs(q.r-r)<12)) r-=15;
+    placed.push({th,r});
+    const [px,py]=pt(r,th);
+    const [lx,ly]=pt(138,th), [mx,my]=pt(r+9,th);
+    svg.appendChild(el('line',{x1:lx,y1:ly,x2:mx,y2:my,stroke:'#4A4230','stroke-width':.8}));
+    svg.appendChild(el('circle',{cx:px,cy:py,r:10.5,fill:'#12100B',
+      stroke:p.retro?'#A63D2F':'#C89B3C','stroke-width':1.2}));
+    const g=el('text',{x:px,y:py,fill:p.retro?'#D9755F':'#E8C87A',
+      'font-size':S.lang==='ml'?11:9.5,'text-anchor':'middle','dominant-baseline':'central',
+      'font-family':S.lang==='ml'?'Noto Sans Malayalam, sans-serif':'IBM Plex Mono, monospace'});
+    g.textContent=glyph(p);
+    svg.appendChild(g);
+  }
+
+  /* hub readout */
+  svg.appendChild(el('circle',{cx:CX,cy:CY,r:30,fill:'#0F0D09',stroke:'#3A3427'}));
+  const dt=new Date(S.ms+S.tz*3600000);
+  const t1=el('text',{x:CX,y:CY-6,fill:'#E8C87A','font-size':11,'text-anchor':'middle',
+    'font-family':'IBM Plex Mono, monospace','letter-spacing':'.5'});
+  t1.textContent=dt.toISOString().slice(11,16);
+  const t2=el('text',{x:CX,y:CY+8,fill:'#7E7460','font-size':8,'text-anchor':'middle',
+    'font-family':'IBM Plex Mono, monospace'});
+  t2.textContent=dt.toISOString().slice(0,10);
+  svg.appendChild(t1); svg.appendChild(t2);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   7. SOUTH-INDIAN (KERALA) SQUARE CHART
+   ══════════════════════════════════════════════════════════════ */
+const CELLS=[
+  {r:0,c:1,s:0},{r:0,c:2,s:1},{r:0,c:3,s:2},{r:1,c:3,s:3},
+  {r:2,c:3,s:4},{r:3,c:3,s:5},{r:3,c:2,s:6},{r:3,c:1,s:7},
+  {r:3,c:0,s:8},{r:2,c:0,s:9},{r:1,c:0,s:10},{r:0,c:0,s:11}
+];
+
+function drawSquare(svgId, signOf, label){
+  const svg=document.getElementById(svgId);
+  svg.textContent='';
+  const c=S.chart, P=10, W=320, U=W/4;
+  const lagSign = signOf(c.lagna);
+
+  const occupants={};
+  for(const p of c.planets){ (occupants[signOf(p)] ||= []).push(p); }
+
+  for(const cell of CELLS){
+    const x=P+cell.c*U, y=P+cell.r*U;
+    const isLag = cell.s===lagSign;
+    svg.appendChild(el('rect',{x,y,width:U,height:U,
+      fill:isLag?'#FFFBF0':'#FFFFFF',stroke:'#DED7C7','stroke-width':1}));
+
+    /* Kerala lagna mark: diagonal across the corner */
+    if(isLag){
+      svg.appendChild(el('path',{d:`M${x} ${y+22} L${x+22} ${y}`,
+        stroke:'#C89B3C','stroke-width':1.6,fill:'none'}));
+    }
+
+    const rl=el('text',{x:x+U-4,y:y+U-4,'text-anchor':'end',
+      fill:'#B9AF9A','font-size':S.lang==='ml'?8.5:7.5,
+      'font-family':S.lang==='ml'?'Noto Sans Malayalam, sans-serif':'IBM Plex Mono, monospace'});
+    rl.textContent=rname(cell.s);
+    svg.appendChild(rl);
+
+    const occ=occupants[cell.s]||[];
+    const items = isLag ? [c.lagna,...occ] : occ;
+    items.forEach((p,i)=>{
+      const col=i%2, row=Math.floor(i/2);
+      const tx=x+8+col*36, ty=y+20+row*17;
+      const t=el('text',{x:tx,y:ty,fill:p.id==='la'?'#9A7519':(p.retro?'#A63D2F':'#14120E'),
+        'font-size':S.lang==='ml'?13:11.5,
+        'font-family':S.lang==='ml'?'Noto Sans Malayalam, sans-serif':'IBM Plex Mono, monospace',
+        'font-weight':p.id==='la'?600:400});
+      t.textContent = glyph(p) + (p.retro && p.id!=='ra' && p.id!=='ke' ? '˙' : '');
+      svg.appendChild(t);
+    });
+  }
+
+  const lab=el('text',{x:P+2*U,y:P+2*U,'text-anchor':'middle','dominant-baseline':'central',
+    fill:'#C9C0AC','font-size':13,'font-family':'Fraunces, serif','letter-spacing':'.14em'});
+  lab.textContent=label;
+  svg.appendChild(lab);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   8. READOUT + TABLE
+   ══════════════════════════════════════════════════════════════ */
+function drawRail(){
+  const c=S.chart, moon=c.planets.find(p=>p.id==='mo');
+  const M=S.lang==='ml';
+
+  document.getElementById('readout').innerHTML=`
+    <div class="cellr hero">
+      <div class="k ${M?'mal':''}">${M?'ജന്മനക്ഷത്രം (ചന്ദ്രൻ)':'Janma nakṣatra — Moon'}</div>
+      <div class="v ${M?'mal':''}">${nname(moon.nak)} <span style="color:#9A7519">${moon.pada}</span></div>
+      <div class="n">#${moon.nak+1} · ${rname(moon.sign)} ${dms(moon.deg)}</div>
+    </div>
+    <div class="cellr">
+      <div class="k ${M?'mal':''}">${M?'ലഗ്നം':'Lagna'}</div>
+      <div class="v ${M?'mal':''}">${rname(c.lagna.sign)}</div>
+      <div class="n">${dms(c.lagna.deg)}</div>
+    </div>
+    <div class="cellr">
+      <div class="k ${M?'mal':''}">${M?'ലഗ്നനക്ഷത്രം':'Lagna nakṣatra'}</div>
+      <div class="v ${M?'mal':''}">${nname(c.lagna.nak)} <span style="color:#9A7519">${c.lagna.pada}</span></div>
+      <div class="n">#${c.lagna.nak+1}</div>
+    </div>
+    <div class="cellr">
+      <div class="k">Tithi</div>
+      <div class="v">${c.tithi}</div>
+      <div class="n">${c.paksha} pakṣa</div>
+    </div>
+    <div class="cellr">
+      <div class="k">Ayanāṁśa</div>
+      <div class="v" style="font-family:var(--mono);font-size:15px">${dms(c.ay)}</div>
+      <div class="n">Lahiri</div>
+    </div>`;
+
+  document.getElementById('ptable').innerHTML=c.planets.map(p=>`
+    <tr>
+      <td class="${M?'nak':''}">${gname(p)}${p.retro&&p.id!=='ra'&&p.id!=='ke'?' <span class="rx">℞</span>':''}</td>
+      <td class="${M?'nak':''}">${rname(p.sign)}</td>
+      <td>${dms(p.deg)}</td>
+      <td class="${M?'nak':''}">${nname(p.nak)}</td>
+      <td>${p.pada}</td>
+      <td class="${M?'nak':''}">${rname(p.nav)}</td>
+    </tr>`).join('');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   9. MAIN REFRESH
+   ══════════════════════════════════════════════════════════════ */
+let raf=null;
+function refresh(fieldsToo=true, ex=null){
+  S.chart=buildChart(S.ms,S.lat,S.lon,ex);
+  drawDial();
+  drawSquare('d1', p=>p.sign, 'D1');
+  drawSquare('d9', p=>p.nav,  'D9');
+  drawRail();
+  if(fieldsToo){
+    const d=new Date(S.ms+S.tz*3600000).toISOString();
+    document.getElementById('fdate').value=d.slice(0,10);
+    document.getElementById('ftime').value=d.slice(11,16);
+  }
+}
+const schedule=(f=true)=>{ if(raf)cancelAnimationFrame(raf);
+  raf=requestAnimationFrame(()=>{ refresh(f); if(S.exact) queueExact(); }); };
+
+/* ---- exact mode: settle for 180 ms, then ask the server ---- */
+const note=document.getElementById('srcnote');
+function say(msg){ note.hidden=!msg; note.textContent=msg||''; }
+let exTimer=null, exSeq=0;
+function queueExact(){
+  clearTimeout(exTimer);
+  exTimer=setTimeout(async()=>{
+    const seq=++exSeq;
+    const q=`ms=${Math.round(S.ms)}&lat=${S.lat}&lon=${S.lon}`;
+    try{
+      const r=await fetch(`/chart?${q}`);
+      if(!r.ok) throw new Error(r.status);
+      const data=await r.json();
+      if(seq!==exSeq) return;              /* superseded by a newer drag */
+      refresh(false,data);
+      say('');
+    }catch(err){
+      S.exact=false;
+      document.querySelectorAll('#srctog button')
+        .forEach(b=>b.setAttribute('aria-pressed', b.dataset.src==='fast'));
+      say('No server on this page — start chakra_api.py and open http://127.0.0.1:8777. Showing FAST values.');
+    }
+  },180);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   10. DIAL DRAG  →  TIME
+   ══════════════════════════════════════════════════════════════ */
+const dial=document.getElementById('dial');
+let drag=null;
+function angleAt(e){
+  const r=dial.getBoundingClientRect();
+  const x=e.clientX-(r.left+r.width/2), y=e.clientY-(r.top+r.height/2);
+  return Math.atan2(x,-y)*R2D;          /* clockwise from 12 o'clock */
+}
+dial.addEventListener('pointerdown',e=>{
+  dial.setPointerCapture(e.pointerId);
+  dial.classList.add('dragging');
+  drag=angleAt(e); stop();
+});
+dial.addEventListener('pointermove',e=>{
+  if(drag===null) return;
+  const a=angleAt(e);
+  let d=a-drag; if(d>180)d-=360; if(d<-180)d+=360;
+  drag=a;
+  S.ms += (d/360)*S.unit*1000;
+  schedule();
+});
+const endDrag=e=>{ if(drag===null)return; drag=null; dial.classList.remove('dragging'); };
+dial.addEventListener('pointerup',endDrag);
+dial.addEventListener('pointercancel',endDrag);
+
+/* keyboard nudge */
+dial.tabIndex=0;
+dial.addEventListener('keydown',e=>{
+  const step=e.shiftKey?1/12:1/360;
+  if(e.key==='ArrowRight'||e.key==='ArrowUp'){S.ms+=step*S.unit*1000;schedule();e.preventDefault();}
+  if(e.key==='ArrowLeft' ||e.key==='ArrowDown'){S.ms-=step*S.unit*1000;schedule();e.preventDefault();}
+});
+
+/* ══════════════════════════════════════════════════════════════
+   11. CONTROLS
+   ══════════════════════════════════════════════════════════════ */
+document.getElementById('gearbar').addEventListener('click',e=>{
+  const b=e.target.closest('.gear'); if(!b) return;
+  S.unit=+b.dataset.unit;
+  document.querySelectorAll('.gear').forEach(g=>g.setAttribute('aria-pressed',g===b));
+});
+document.getElementById('srctog').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  S.exact = b.dataset.src==='exact';
+  document.querySelectorAll('#srctog button').forEach(g=>g.setAttribute('aria-pressed',g===b));
+  if(S.exact){ say('Asking the server…'); queueExact(); } else { say(''); refresh(false); }
+});
+document.getElementById('langtog').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  S.lang=b.dataset.lang;
+  document.querySelectorAll('#langtog button').forEach(g=>g.setAttribute('aria-pressed',g===b));
+  schedule();
+});
+
+function readFields(){
+  const d=document.getElementById('fdate').value,
+        t=document.getElementById('ftime').value;
+  S.tz =parseFloat(document.getElementById('ftz').value)||0;
+  S.lat=parseFloat(document.getElementById('flat').value)||0;
+  S.lon=parseFloat(document.getElementById('flon').value)||0;
+  if(d&&t) S.ms = Date.parse(`${d}T${t}:00Z`) - S.tz*3600000;
+  schedule(false);
+}
+['fdate','ftime','ftz','flat','flon'].forEach(id=>
+  document.getElementById(id).addEventListener('input',readFields));
+
+document.getElementById('fplace').addEventListener('change',e=>{
+  if(!e.target.value) return;
+  const [la,lo,tz]=e.target.value.split(',').map(Number);
+  document.getElementById('flat').value=la;
+  document.getElementById('flon').value=lo;
+  document.getElementById('ftz').value=tz;
+  readFields();
+});
+
+/* transport */
+let timer=null, dir=1;
+function stop(){ if(timer)cancelAnimationFrame(timer); timer=null;
+  document.getElementById('play').textContent='▶'; }
+function run(d){
+  stop(); dir=d;
+  document.getElementById('play').textContent='❚❚';
+  let last=performance.now();
+  const tick=now=>{
+    S.ms += dir*((now-last)/1000)*(S.unit/12);   /* 12 s per revolution */
+    last=now; refresh();
+    timer=requestAnimationFrame(tick);
+  };
+  timer=requestAnimationFrame(tick);
+}
+document.getElementById('play').onclick=()=>timer?stop():run(1);
+document.getElementById('rew').onclick =()=>run(-1);
+document.getElementById('now').onclick =()=>{stop(); S.ms=Date.now(); refresh();};
+
+/* boot */
+(function init(){
+  const d=new Date(S.ms+S.tz*3600000).toISOString();
+  document.getElementById('fdate').value=d.slice(0,10);
+  document.getElementById('ftime').value=d.slice(11,16);
+  refresh(false);
+})();
+</script>
+</body>
+</html>
