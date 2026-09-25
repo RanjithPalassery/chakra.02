@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#14120E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Chakra">
 <title>Chakra Darshini — Jyotish Codex</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,6 +40,7 @@ body{
 
 /* ---------- masthead ---------- */
 header{
+  padding-top:env(safe-area-inset-top);
   display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
   padding:14px 20px 12px;border-bottom:1px solid var(--rule);
 }
@@ -132,7 +137,7 @@ table.pl th{
 table.pl td{padding:4px 6px 4px 0;border-bottom:1px solid #EFEBE0}
 table.pl td.nak{font-family:var(--mal);font-size:12.5px}
 .rx{color:var(--retro);font-weight:600}
-footer{padding:12px 20px 26px;font-family:var(--mono);font-size:9.5px;color:var(--muted);line-height:1.7}
+footer{padding:12px 20px calc(26px + env(safe-area-inset-bottom));font-family:var(--mono);font-size:9.5px;color:var(--muted);line-height:1.7}
 footer b{color:var(--ink-2)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -189,14 +194,109 @@ footer b{color:var(--ink-2)}
         <label><span>Preset place</span>
           <select id="fplace">
             <option value="">— choose —</option>
-            <option value="27.0174,49.6225,3">Jubail, SA</option>
-            <option value="11.2588,75.7804,5.5">Kozhikode</option>
-            <option value="10.7867,76.6548,5.5">Palakkad</option>
-            <option value="8.5241,76.9366,5.5">Thiruvananthapuram</option>
-            <option value="9.9312,76.2673,5.5">Kochi</option>
-            <option value="11.8745,75.3704,5.5">Kannur</option>
-            <option value="10.5276,76.2144,5.5">Thrissur</option>
-            <option value="9.5916,76.5222,5.5">Kottayam</option>
+            <optgroup label="Kerala — district headquarters">
+              <option value="8.5241,76.9366,5.5">Thiruvananthapuram</option>
+              <option value="8.8932,76.6141,5.5">Kollam</option>
+              <option value="9.2648,76.787,5.5">Pathanamthitta</option>
+              <option value="9.4981,76.3388,5.5">Alappuzha</option>
+              <option value="9.5916,76.5222,5.5">Kottayam</option>
+              <option value="9.8497,76.972,5.5">Painavu (Idukki)</option>
+              <option value="9.9312,76.2673,5.5">Kochi / Ernakulam</option>
+              <option value="10.5276,76.2144,5.5">Thrissur</option>
+              <option value="10.7867,76.6548,5.5">Palakkad</option>
+              <option value="11.051,76.0711,5.5">Malappuram</option>
+              <option value="11.2588,75.7804,5.5">Kozhikode</option>
+              <option value="11.6054,76.0834,5.5">Kalpetta (Wayanad)</option>
+              <option value="11.8745,75.3704,5.5">Kannur</option>
+              <option value="12.4996,74.9869,5.5">Kasaragod</option>
+            </optgroup>
+            <optgroup label="Kerala — towns">
+              <option value="8.6963,76.8148,5.5">Attingal</option>
+              <option value="8.4004,77.0855,5.5">Neyyattinkara</option>
+              <option value="8.6033,77.0026,5.5">Nedumangad</option>
+              <option value="8.7379,76.7163,5.5">Varkala</option>
+              <option value="9.0021,76.78,5.5">Kottarakkara</option>
+              <option value="9.0224,76.9284,5.5">Punalur</option>
+              <option value="9.1795,76.501,5.5">Kayamkulam</option>
+              <option value="9.1585,76.7315,5.5">Adoor</option>
+              <option value="9.2603,76.549,5.5">Mavelikkara</option>
+              <option value="9.287,76.464,5.5">Haripad</option>
+              <option value="9.3157,76.6151,5.5">Chengannur</option>
+              <option value="9.3833,76.5747,5.5">Thiruvalla</option>
+              <option value="9.3833,76.7833,5.5">Ranni</option>
+              <option value="9.4459,76.5406,5.5">Changanassery</option>
+              <option value="9.56,76.79,5.5">Kanjirappally</option>
+              <option value="9.6841,76.3363,5.5">Cherthala</option>
+              <option value="9.71,76.68,5.5">Pala</option>
+              <option value="9.749,76.396,5.5">Vaikom</option>
+              <option value="9.8949,76.718,5.5">Thodupuzha</option>
+              <option value="9.9812,76.578,5.5">Muvattupuzha</option>
+              <option value="9.945,76.348,5.5">Tripunithura</option>
+              <option value="10.06,76.32,5.5">Kalamassery</option>
+              <option value="10.1081,76.3517,5.5">Aluva</option>
+              <option value="10.1074,76.475,5.5">Perumbavoor</option>
+              <option value="10.144,76.228,5.5">North Paravur</option>
+              <option value="10.196,76.386,5.5">Angamaly</option>
+              <option value="10.2261,76.1946,5.5">Kodungallur</option>
+              <option value="10.3061,76.3345,5.5">Chalakudy</option>
+              <option value="10.3419,76.2116,5.5">Irinjalakuda</option>
+              <option value="10.5946,76.0411,5.5">Guruvayur</option>
+              <option value="10.7,76.75,5.5">Chittur</option>
+              <option value="10.76,76.27,5.5">Shoranur</option>
+              <option value="10.77,76.3776,5.5">Ottapalam</option>
+              <option value="10.9139,75.9223,5.5">Tirur</option>
+              <option value="10.9762,76.2276,5.5">Perinthalmanna</option>
+              <option value="11.1204,76.1198,5.5">Manjeri</option>
+              <option value="11.2769,76.2262,5.5">Nilambur</option>
+              <option value="11.4436,75.6944,5.5">Koyilandy</option>
+              <option value="11.6086,75.592,5.5">Vadakara</option>
+              <option value="11.665,76.26,5.5">Sultan Bathery</option>
+              <option value="11.8017,76.0034,5.5">Mananthavady</option>
+              <option value="11.748,75.4929,5.5">Thalassery</option>
+              <option value="12.04,75.36,5.5">Taliparamba</option>
+              <option value="12.0947,75.202,5.5">Payyannur</option>
+              <option value="12.3079,75.09,5.5">Kanhangad</option>
+              <option value="12.2596,75.1349,5.5">Nileshwaram</option>
+            </optgroup>
+            <optgroup label="Gulf">
+              <option value="27.0174,49.6225,3">Jubail, SA</option>
+              <option value="26.4207,50.0888,3">Dammam, SA</option>
+              <option value="24.7136,46.6753,3">Riyadh, SA</option>
+              <option value="21.4858,39.1925,3">Jeddah, SA</option>
+              <option value="24.0895,38.0618,3">Yanbu, SA</option>
+              <option value="25.2048,55.2708,4">Dubai, UAE</option>
+              <option value="24.4539,54.3773,4">Abu Dhabi, UAE</option>
+              <option value="25.3463,55.4209,4">Sharjah, UAE</option>
+              <option value="25.2854,51.531,3">Doha, QA</option>
+              <option value="29.3759,47.9774,3">Kuwait City, KW</option>
+              <option value="26.2285,50.586,3">Manama, BH</option>
+              <option value="23.588,58.3829,4">Muscat, OM</option>
+              <option value="17.0151,54.0924,4">Salalah, OM</option>
+            </optgroup>
+            <optgroup label="India — other">
+              <option value="12.9716,77.5946,5.5">Bengaluru</option>
+              <option value="13.0827,80.2707,5.5">Chennai</option>
+              <option value="11.0168,76.9558,5.5">Coimbatore</option>
+              <option value="12.9141,74.856,5.5">Mangaluru</option>
+              <option value="19.076,72.8777,5.5">Mumbai</option>
+              <option value="18.5204,73.8567,5.5">Pune</option>
+              <option value="17.385,78.4867,5.5">Hyderabad</option>
+              <option value="28.6139,77.209,5.5">New Delhi</option>
+              <option value="22.5726,88.3639,5.5">Kolkata</option>
+              <option value="23.0225,72.5714,5.5">Ahmedabad</option>
+            </optgroup>
+            <optgroup label="Rest of world">
+              <option value="51.5074,-0.1278,1">London, UK</option>
+              <option value="53.3498,-6.2603,1">Dublin, IE</option>
+              <option value="50.1109,8.6821,2">Frankfurt, DE</option>
+              <option value="40.7128,-74.006,-4">New York, US</option>
+              <option value="41.8781,-87.6298,-5">Chicago, US</option>
+              <option value="43.6532,-79.3832,-4">Toronto, CA</option>
+              <option value="1.3521,103.8198,8">Singapore</option>
+              <option value="-33.8688,151.2093,10">Sydney, AU</option>
+              <option value="-37.8136,144.9631,10">Melbourne, AU</option>
+              <option value="-36.8485,174.7633,12">Auckland, NZ</option>
+            </optgroup>
           </select>
         </label>
       </div>
@@ -666,7 +766,8 @@ function queueExact(){
     const seq=++exSeq;
     const q=`ms=${Math.round(S.ms)}&lat=${S.lat}&lon=${S.lon}`;
     try{
-      const r=await fetch(`/chart?${q}`);
+      const base=new URLSearchParams(location.search).get('api')||'';
+      const r=await fetch(`${base}/chart?${q}`);
       if(!r.ok) throw new Error(r.status);
       const data=await r.json();
       if(seq!==exSeq) return;              /* superseded by a newer drag */
@@ -676,7 +777,7 @@ function queueExact(){
       S.exact=false;
       document.querySelectorAll('#srctog button')
         .forEach(b=>b.setAttribute('aria-pressed', b.dataset.src==='fast'));
-      say('No server on this page — start chakra_api.py and open http://127.0.0.1:8777. Showing FAST values.');
+      say('No server reachable. Start chakra_api.py on the Mac, or add ?api=<address> to this URL. Showing FAST values.');
     }
   },180);
 }
@@ -776,6 +877,8 @@ function run(d){
 document.getElementById('play').onclick=()=>timer?stop():run(1);
 document.getElementById('rew').onclick =()=>run(-1);
 document.getElementById('now').onclick =()=>{stop(); S.ms=Date.now(); refresh();};
+
+
 
 /* boot */
 (function init(){
